@@ -8,12 +8,14 @@ from ultralytics import YOLO
 # Initialize model
 model = YOLO('yolo11s.pt')
 
-# Train the model
+# Train the model with memory-efficient settings
 results = model.train(
     data='kitti.yaml',
     epochs=100,
     imgsz=640,
-    batch=16,
+    batch=8,  # Reduced from 16 to save memory
+    workers=4,  # Reduce data loading workers to save memory
+    amp=True,  # Enable mixed precision training (uses less memory)
     project='runs/detect',
     name='yolo11s_kitti',
     patience=50,
